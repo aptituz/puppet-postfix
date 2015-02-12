@@ -1,14 +1,24 @@
 # = Define: postfix::config
 #
 # Handle a postfix configuration file
+
+
 define postfix::config (
     $path       = $title,
     $ensure     = 'present',
-    $template   = $postfix::params::config_template,
+    $template   = $postfix::config_template,
     $source     = undef,
     $options    = undef,
 ) {
-    
+
+    if ! defined(Class['postfix']) {
+        fail('You must include the postfix base class before using any postfix defined resources')
+    }
+
+    if ! $source and ! $options {
+        fail('You must either specify a source or pass options')
+    }
+
     if $source {
         $real_content   = undef
         $real_source    = $source
