@@ -6,6 +6,7 @@ class postfix::params {
     $ensure_enabled     = true
     $manage_instances   = false
     $manage_aliases     = false
+    $confdir            = '/etc/postfix'
     $config_source      = undef
     $config_template    = 'postfix/postfix_main.erb'
     $instances          = undef
