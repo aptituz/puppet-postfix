@@ -1,3 +1,5 @@
+# = Class postfix::params
+
 class postfix::params {
     $ensure             = present
     $ensure_running     = true

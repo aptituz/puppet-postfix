@@ -1,14 +1,17 @@
+# = Class: postfix::service
+#
+# Manage the postfix service
 class postfix::service (
     $ensure     = 'running',
     $enabled    = true
-    ) inherits postfix::params {
+) {
 
     Class['postfix::package'] -> Class['postfix::service']
 
     if $ensure == 'ignore' {
-       $real_ensure = undef
+      $real_ensure = undef
     } else {
-       $real_ensure = $ensure
+      $real_ensure = $ensure
     }
 
     service { 'postfix':
