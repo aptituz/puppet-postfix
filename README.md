@@ -103,7 +103,7 @@ This module is written and being maintained by
     
     Patrick Schoenfeld <patrick.schoenfeld@credativ.de>.
 
-It has been based on the module credativ/puppet-ssh-hiera, previously written
+It has been based on the module credativ/puppet-postfix, previously written
 for my employer and maintained together with my colleagues. It contains
 contributions from at least the following authors:
 
