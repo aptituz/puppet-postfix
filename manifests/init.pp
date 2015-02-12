@@ -72,15 +72,15 @@ class postfix (
     $disabled_hosts     = $postfix::params::disabled_hosts,
     ) inherits postfix::params {
 
-    Class['postfix::package'] -> Class['postfix::instances']
+    class { 'postfix::package':
+        ensure => $ensure,
+    }
 
     class { 'postfix::instances':
         manage_instances => $manage_instances,
         instances        => $instances,
-    }
-
-    class { 'postfix::package':
-        ensure => $ensure,
+        require          => Class['postfix::package'],
+        notify           => Class['postfix::service']
     }
 
     if $::hostname in $disabled_hosts {
@@ -94,7 +94,6 @@ class postfix (
     class { 'postfix::service':
         ensure  => $real_running,
         enabled => $real_enabled,
-        require => Class['postfix::instances'],
     }
 
     if $manage_config {
