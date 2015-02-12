@@ -121,14 +121,9 @@ class postfix (
     }
 
     if $manage_config {
-        if $config_template {
-            file { '/etc/postfix/main.cf':
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                content => template("postfix/${config_template}"),
-                notify  => Service['postfix']
-            }
+        class { 'postfix::config':
+            ensure  => $ensure,
+            options => $postfix_options,
         }
 
         if $manage_aliases {

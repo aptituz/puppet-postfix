@@ -1,0 +1,6 @@
+# MANAGED BY PUPPET (postfix/templates)
+<% @options.each do |k,v| -%>
+<% Array(v).each do |av| -%>
+<%= %Q(#{k} = #{av}) %>
+<% end -%>
+<% end -%>
