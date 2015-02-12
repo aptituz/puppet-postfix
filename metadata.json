@@ -1,0 +1,52 @@
+{
+  "name": "aptituz/postfix",
+  "version": "00.0",
+  "author": "Patrick Schoenfeld <patrick.schoenfeld@credativ.de>",
+  "summary": "puppet module to manage postfix",
+  "license": "MIT",
+  "source": "https://github.com/aptituz/puppet-postfix",
+  "project_page": "https://github.com/aptituz/puppet-postfix",
+  "issues_url": "https://github.com/aptituz/puppet-postfix/issues",
+  "description": "This module allows managing postfix",
+  "tags": ["postfix", "mta", "email", "e-mail", "smtp", "smtpd", "postmap", "aliases"],
+  "operatingsystem_support": [
+    {
+        "operatingsystem": "CentOS",
+        "operatingsystemrelease": [
+            "5",
+            "6",
+            "7"
+        ]
+    },
+    {
+        "operatingsystem": "Debian",
+        "operatingsystemrelease": [
+            "5",
+            "6",
+            "7"
+        ]
+    },
+    {
+        "operatingsystem": "OracleLinux",
+        "operatingsystemrelease": [
+            "6.5"
+        ]
+    },
+    {
+        "operatingsystem": "Ubuntu",
+        "operatingsystemrelease": [
+            "12.04",
+            "14.04"
+        ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">=2.7.11"
+    }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=1.0.0" }
+  ]
+}
