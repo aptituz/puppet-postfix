@@ -51,24 +51,8 @@
 #   A list of postfix instances that should be created (only useful in
 #   conjunction with manage_instances)
 #
-# [*root_alias*]
-#   Defines the alias for root mail.
-#
 # [*aliases*]
 #   Allows further aliases to be defined.
-
-# [*myorigin*]
-#   Refers to the myorigin configuration paramater.
-#
-# [*localdomain*]
-#   Should describe the localdomain of this host. Will be added to the
-#   mydestination configuration
-#
-# [*relayhost*]
-#   Allows to define a relayhost in the configuration.
-#
-# [*inet_interfaces*]
-#   Allows to define a value for the inet_interfaces parameter.
 #
 # == Author:
 #
@@ -83,16 +67,9 @@ class postfix (
     $config_source      = $postfix::params::config_source,
     $config_template    = $postfix::params::config_template,
     $instances          = $postfix::params::instances,
-    $myorigin           = $postfix::params::myorigin,
-    $smtp_bind_address  = $postfix::params::smtp_bind_address,
-    $smtp_helo_name     = $postfix::params::smtp_helo_name,
-    $root_alias         = $postfix::params::root_alias,
     $aliases            = $postfix::params::aliases,
+    $postfix_options    = $postfix::params::postfix_options,
     $disabled_hosts     = $postfix::params::disabled_hosts,
-    $localdomain        = $postfix::params::localdomain,
-    $relayhost          = $postfix::params::relayhost,
-    $inet_interfaces    = $postfix::params::inet_interfaces,
-
     ) inherits postfix::params {
 
     Class['postfix::package'] -> Class['postfix::instances']
