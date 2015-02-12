@@ -1,7 +1,10 @@
+# = Define: postfix::config
+#
+# Handle a postfix configuration file
 define postfix::config (
     $path       = $title,
     $ensure     = 'present',
-    $template   = "postfix/postfix_main.erb",
+    $template   = $postfix::params::config_template,
     $source     = undef,
     $options    = undef,
 ) {
@@ -19,8 +22,8 @@ define postfix::config (
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => $content,
-        source  => $source,
+        content => $real_content,
+        source  => $real_source,
         notify  => Service['postfix']
     }
 

@@ -7,7 +7,7 @@ class postfix::params {
     $manage_instances   = false
     $manage_aliases     = false
     $config_source      = undef
-    $config_template    = undef
+    $config_template    = 'postfix/postfix_main.erb'
     $instances          = undef
     $myorigin           = undef
     $smtp_bind_address  = undef

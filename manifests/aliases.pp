@@ -1,3 +1,6 @@
+# = Class: postfix::aliases
+#
+# Handles the /etc/aliases
 class postfix::aliases (
     $ensure     = 'present',
     $template   = 'postfix/aliases.erb',

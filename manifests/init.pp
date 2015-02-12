@@ -99,8 +99,9 @@ class postfix (
 
     if $manage_config {
         postfix::config { '/etc/postfix/main.cf':
-            ensure  => $ensure,
-            options => $postfix_options,
+            ensure      => $ensure,
+            options     => $postfix_options,
+            template    => $config_template,
         }
 
         if $manage_aliases {
