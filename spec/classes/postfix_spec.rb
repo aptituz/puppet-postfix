@@ -7,5 +7,10 @@ describe 'postfix' do
                 
         context "basic tests" do
                 it { should contain_class('postfix') }
+                it { should contain_class('postfix::package') }
+                it { should contain_class('postfix::service') }
+                it { should contain_package('postfix') }
+                it { should contain_service('postfix') }
+
         end
 end
