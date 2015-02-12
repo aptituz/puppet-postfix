@@ -12,11 +12,11 @@ class postfix::service (
     }
 
     service { 'postfix':
-        ensure      => $real_ensure,
-        enable      => $enabled,
-        hasrestart  => true,
-        restart     => 'service postfix reload',
-        hasstatus   => true,
-        require     => Package['postfix'],
+        ensure     => $real_ensure,
+        enable     => $enabled,
+        hasrestart => true,
+        restart    => 'service postfix reload',
+        hasstatus  => true,
+        require    => Package['postfix'],
     }
 }
