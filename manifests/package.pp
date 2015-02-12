@@ -3,10 +3,11 @@
 # Manage the postfix package(s)
 #
 class postfix::package (
-    $ensure = 'present',
+    $ensure         = 'present',
+    $package_name   = $postfix::params::package_name
     ) {
 
-    package { 'postfix':
+    package { $package_name:
         ensure => $ensure,
     }
 }

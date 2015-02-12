@@ -18,4 +18,7 @@ class postfix::params {
     $relayhost          = undef
     $inet_interfaces    = undef
     $localdomain        = undef
+
+    $service_name = 'postfix'
+    $package_name = 'postfix'
 }

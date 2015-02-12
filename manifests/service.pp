@@ -2,8 +2,9 @@
 #
 # Manage the postfix service
 class postfix::service (
-    $ensure     = 'running',
-    $enabled    = true
+    $ensure         = 'running',
+    $enabled        = true,
+    $service_name   = $postfix::params::service_name,
 ) {
 
     Class['postfix::package'] -> Class['postfix::service']
@@ -14,7 +15,7 @@ class postfix::service (
       $real_ensure = $ensure
     }
 
-    service { 'postfix':
+    service { $service_name:
         ensure     => $real_ensure,
         enable     => $enabled,
         hasrestart => true,
