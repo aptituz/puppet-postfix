@@ -1,4 +1,5 @@
-class postfix::config (
+define postfix::config (
+    $path       = $title,
     $ensure     = 'present',
     $template   = "postfix/postfix_main.erb",
     $source     = undef,
@@ -13,7 +14,7 @@ class postfix::config (
         $real_source    = undef
     }
 
-    file { '/etc/postfix/main.cf':
+    file { $path:
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',

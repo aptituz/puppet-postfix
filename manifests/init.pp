@@ -121,7 +121,7 @@ class postfix (
     }
 
     if $manage_config {
-        class { 'postfix::config':
+        postfix::config { '/etc/postfix/main.cf':
             ensure  => $ensure,
             options => $postfix_options,
         }
