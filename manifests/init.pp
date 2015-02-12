@@ -131,10 +131,7 @@ class postfix (
             }
         }
 
-        exec { 'update-aliases':
-            command     => '/usr/bin/newaliases',
-            refreshonly => true
-        }
+        include postfix::newaliases
         if $manage_aliases {
             file { '/etc/aliases':
                 ensure  => present,
@@ -142,7 +139,7 @@ class postfix (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                notify  => Exec['update-aliases'],
+                notify  => Exec['newaliases'],
                 require => Package['postfix'],
             }
         }
