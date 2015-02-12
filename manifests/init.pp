@@ -131,18 +131,13 @@ class postfix (
             }
         }
 
-        include postfix::newaliases
         if $manage_aliases {
-            file { '/etc/aliases':
-                ensure  => present,
-                content => template('postfix/aliases.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                notify  => Exec['newaliases'],
-                require => Package['postfix'],
+            class { 'postfix::aliases':
+                ensure  => $ensure,
+                aliases => $aliases
             }
         }
+
     }
 
 
