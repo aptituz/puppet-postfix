@@ -1,10 +1,6 @@
-# = Class: postfix::ldap
+# = Class: postfix::pcre
 #
 # Enable support for pcre maps
 class postfix::pcre {
-    if $osfamily == 'Debian' {
-        package { 'postfix-pcre':
-            ensure  => present
-        }
-    }
+    postfix::mapsupport { 'pcre': }
 }
