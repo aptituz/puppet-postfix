@@ -27,8 +27,11 @@
 #   Specify a configuration source for the configuration (main.cf). If this
 #   is specified it is used instead of a template-generated configuration
 #
-# [*config_template*]
-#   Define a template for the configuration.
+# [*main_config_template*]
+#   Define a template to be used for the main.cf (if manage config is true)
+#
+# [*master_config_template*]
+#   Define a template to be used for the master.cf (if manage config is true)
 #
 # [*disabled_hosts*]
 #   A list of hosts whose postfix will be disabled, if their
@@ -69,6 +72,7 @@ class postfix (
     $instances          = $postfix::params::instances,
     $aliases            = $postfix::params::aliases,
     $postfix_options    = $postfix::params::postfix_options,
+    $master_options     = $postfix::params::master_options,
     $disabled_hosts     = $postfix::params::disabled_hosts,
     ) inherits postfix::params {
 
@@ -100,8 +104,14 @@ class postfix (
         postfix::config { '/etc/postfix/main.cf':
             ensure   => $ensure,
             options  => $postfix_options,
-            template => $config_template,
+            template => $main_config_template,
         }
+
+        postfix::config { '/etc/postfix/master.cf':
+            ensure   => $ensure,
+            options  => $master_options,
+            template => $master_config_template,
+        }        
 
         if $manage_aliases {
             class { 'postfix::aliases':
