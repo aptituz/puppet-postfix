@@ -30,7 +30,7 @@ class postfix::params {
         'mynetworks_style'  => 'host'
     }
 
-    $master_options         = undef
+    $master_options         = {}
 
     $service_name           = 'postfix'
     $package_name           = 'postfix'
