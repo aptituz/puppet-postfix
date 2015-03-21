@@ -57,6 +57,9 @@ class { '::postfix':
 The default template is simply maping the key/value pairs to corresponding
 key = value pairs in the main configuration file.
 
+If you do not specify an options hash, the module defaults to an options hash
+which will setup the system for local mail delivery.
+
 ##Usage
 
 ### Classes and defined types

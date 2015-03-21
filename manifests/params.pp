@@ -20,7 +20,16 @@ class postfix::params {
     $relayhost              = undef
     $inet_interfaces        = undef
     $localdomain            = undef
-    $postfix_options        = undef
+
+    # Default for postfix_options: local mail delivery only
+    $postfix_options        = {
+        'myhostname'        => $::fqdn,
+        'mydomain'          => 'localdomain',
+        'inet_interfaces'   => '$myhostname, localhost',
+        'mydestination'     => '$myhostname, localhost.$mydomain, localhost',
+        'mynetworks_style'  => 'host'
+    }
+
     $master_options         = undef
 
     $service_name           = 'postfix'
