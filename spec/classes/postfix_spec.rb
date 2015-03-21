@@ -13,4 +13,19 @@ describe 'postfix' do
                 it { should contain_service('postfix') }
 
         end
+
+        context "with manage_config => true" do
+                let (:params) {{ :manage_config => 'true' }}
+
+                it { should contain_file('/etc/postfix/main.cf') }
+                it { should contain_file('/etc/postfix/master.cf') }
+
+                context "with postfix_options set" do
+                    let (:params) {{ 
+                        :manage_config   => 'true',
+                        :postfix_options => { 'myhostname' => 'foobar' }}}
+
+                    it { should contain_file('/etc/postfix/main.cf').with_content(/\nmyhostname = foobar\n/) }
+                end
+        end
 end
