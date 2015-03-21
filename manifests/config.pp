@@ -15,13 +15,16 @@ define postfix::config (
         fail('You must include the postfix base class before using any postfix defined resources')
     }
 
-    if ! $source and ! $options {
-        fail('You must either specify a source or pass options')
+    if ! $source and ! $content and ! $options {
+        fail('You must either specify a source, content or pass options for a template')
     }
 
     if $source {
         $real_content   = undef
         $real_source    = $source
+    } elseif $content {
+        $real_content   = $content
+        $real_source    = undef
     } else {
         $real_content   = template($template)
         $real_source    = undef
@@ -34,7 +37,8 @@ define postfix::config (
         mode    => '0644',
         content => $real_content,
         source  => $real_source,
-        notify  => Service['postfix']
+        notify  => Service['postfix'],
+        require => Package['postfix']
     }
 
 }
