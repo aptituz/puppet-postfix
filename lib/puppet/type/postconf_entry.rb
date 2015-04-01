@@ -12,12 +12,12 @@ Puppet::Type.newtype(:postconf_entry) do
 
     validate do |val|
       unless Pathname.new(val).absolute?
-        fail("File path must be fully qualified, not '#{val}'")
+        fail("confdir must be fully qualified, not '#{val}'")
       end
     end
   end
 
-#  autorequire(:file) do
-#    self[:path] if self[:path] and Pathname.new(self:path).absolute?
-#  end
+  autorequire(:file) do
+    File.join(self[:confdir], 'main.cf')
+  end
 end
