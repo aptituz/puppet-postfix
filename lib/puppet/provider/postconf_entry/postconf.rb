@@ -21,6 +21,8 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
     postconf('-c', confdir, args)
   end
 
+  # FIXME: mxey said that this should probably return a list or even a hash of
+  # key value pairs. He's right. Could be fixed someday.
   def self.list_conf_entries(confdir)
     self.run_postconf_with_confdir(confdir, '-n')
   end
