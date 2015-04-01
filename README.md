@@ -91,6 +91,13 @@ It also includes the following defined types:
 - postfix::maincf
 - postfix::mastercf
 
+Lastly it contains an EXPERIMENTAL custom type
+
+postconf_entry
+
+which can be used to edit postfix main.cf settings. Currently it's not
+recommended to be used, since its likely to change.
+
 ## Limitations
 
 This module has been tested and is used primarily on Debian-based systems.
