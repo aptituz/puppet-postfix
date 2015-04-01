@@ -7,8 +7,6 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   end
 
   def self.prefetch(resources)
-    settings = self.instances
-  
     resources.each do |name, resource|
         confdir = resource[:confdir]
         settings = self.fetch_resources(confdir)
