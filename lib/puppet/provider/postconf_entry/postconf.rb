@@ -7,11 +7,11 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   end
 
   def self.prefetch(resources)
-    resources.each do |name, resource|
-        confdir = resource[:confdir]
+    confdirs = resources.map { |name, resource| resource[:confdir] }.uniq
+    confdirs.each do |confdir|
         settings = self.fetch_resources(confdir)
 
-        if provider = settings.find{ |setting| setting.name == name }
+        if settings = settings.find{ |setting| setting.name == name }
             resources[name].provider = provider
         end
     end
