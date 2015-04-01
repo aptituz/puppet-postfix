@@ -28,11 +28,9 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   end
 
 
-  def run_postconf(action, *args)
-    cmdline = []
+  def run_postconf(*args)
     confdir = resource[:confdir]
-
-    self.class.run_postconf_with_confdir(confdir, cmdline)
+    self.class.run_postconf_with_confdir(confdir, args)
   end
 
   def set_conf_entry(key, value)
