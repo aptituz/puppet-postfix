@@ -59,7 +59,7 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
 
   def run_postconf(*args)
     debug("not doing anything")
-    args = [ resource[:confdir], args ]
+    args = [ "-c", resource[:confdir], args ]
     postconf(args)
   end
 end
