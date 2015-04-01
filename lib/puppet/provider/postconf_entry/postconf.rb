@@ -17,13 +17,39 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
     end
   end
 
+  def self.run_postconf_with_confdir(confdir, args)
+    postconf('-c', confdir, args)
+  end
+
+  def self.list_conf_entries(confdir)
+    self.run_postconf_with_confdir(confdir, '-n')
+  end
+
+
+  def run_postconf(action, *args)
+    cmdline = []
+    confdir = resource[:confdir]
+
+    self.class.run_postconf_with_confdir(confdir, cmdline)
+  end
+
+  def set_conf_entry(key, value)
+    args = [ '-e', "#{resource[:key]}=#{value}"]
+    run_postconf(args)
+  end
+
+  def rm_conf_entry(key)
+    args = [ '-X', key ]
+    run_postconf(args)
+  end
+
   def self.fetch_resources(confdir)
-    args = [ '-c', confdir, '-n']
-    entries = postconf(args)
+    entries = self.list_conf_entries(confdir)
     entries.split("\n").collect do |line|
       name, value = line.split(' = ', 2)
- 
+
       new(  :name   => name,
+          :key      => name,
           :value    => value,
           :ensure   => :present,
           :confdir  => '/etc/postfix',
@@ -40,23 +66,18 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   mk_resource_methods
 
   def value=(value)
-    self.run_postconf('-e', "#{resource[:key]}=#{value}")
+    set_conf_entry(resource[:key], value)
     @property_hash[:value] = value
   end
 
   def create
-    self.run_postconf('-e', "#{resource[:key]}=#{resource[:value]}")
+    set_conf_entry(resource[:key], resource[:value]) 
     @property_hash[:value] = resource[:value]
     @property_hash[:ensure] = :present
   end
 
   def destroy
-    self.run_postconf('-X', resource[:key])
+    rm_conf_entry(resource[:key])
   end
 
-  def run_postconf(*args)
-    debug("not doing anything")
-    args = [ "-c", resource[:confdir], args ]
-    postconf(args)
-  end
 end
