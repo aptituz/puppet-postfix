@@ -40,19 +40,18 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   mk_resource_methods
 
   def value=(value)
-    self.run_postconf('-e', "#{resource[:name]}=#{value}")
+    self.run_postconf('-e', "#{resource[:key]}=#{value}")
     @property_hash[:value] = value
   end
 
   def create
-    self.run_postconf('-e', "#{resource[:name]}=#{resource[:value]}")
+    self.run_postconf('-e', "#{resource[:key]}=#{resource[:value]}")
     @property_hash[:value] = resource[:value]
     @property_hash[:ensure] = :present
   end
 
   def destroy
-    debug("Destroying #{resource[:name]}")
-    self.run_postconf('-X', resource[:name])
+    self.run_postconf('-X', resource[:key])
   end
 
   def run_postconf(*args)

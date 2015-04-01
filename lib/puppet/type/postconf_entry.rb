@@ -4,6 +4,10 @@ Puppet::Type.newtype(:postconf_entry) do
   newparam(:name, :namevar => true) do
   end
 
+  newparam(:key) do
+    defaultto { @resource[:name] }
+  end
+
   newproperty(:value) do
   end
 
