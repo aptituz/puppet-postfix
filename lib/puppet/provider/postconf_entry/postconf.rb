@@ -12,8 +12,8 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
         settings = self.fetch_resources(confdir)
 
         resources.keys.each do |name|
-            if settings = settings.find{ |setting| setting.name == name }
-                resources[name].provider = settings
+            if setting = settings.find{ |setting| setting.name == name }
+                resources[name].provider = setting
             end
         end
     end
