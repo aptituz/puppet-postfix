@@ -26,7 +26,11 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   # FIXME: mxey said that this should probably return a list or even a hash of
   # key value pairs. He's right. Could be fixed someday.
   def self.list_conf_entries(confdir)
-    self.run_postconf_with_confdir(confdir, '-n')
+    self.run_postconf_with_confdir(confdir, '-n').split("\n").collect do |line|
+        name, value = line.split(' = ', 2)
+        yield name, value if block_given?
+        [name, value]
+    end
   end
 
 
@@ -46,17 +50,13 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   end
 
   def self.fetch_resources(confdir)
-    entries = self.list_conf_entries(confdir)
-    entries.split("\n").collect do |line|
-      name, value = line.split(' = ', 2)
-
+    self.list_conf_entries(confdir).collect do |name, value|
       new(  :name   => name,
           :key      => name,
           :value    => value,
           :ensure   => :present,
           :confdir  => '/etc/postfix',
       )
-
     end
 
   end
