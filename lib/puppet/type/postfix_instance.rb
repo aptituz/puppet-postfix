@@ -26,4 +26,6 @@ Puppet::Type.newtype(:postfix_instance) do
 
     defaultto { File.join("/var/lib", @resource[:name]) }
   end
+
+  autorequire(:package) { [ 'postfix'] }
 end
