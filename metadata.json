@@ -8,7 +8,7 @@
   "project_page": "https://github.com/aptituz/puppet-postfix",
   "issues_url": "https://github.com/aptituz/puppet-postfix/issues",
   "description": "This module allows managing postfix",
-  "tags": ["postfix", "mta", "email", "e-mail", "smtp", "smtpd", "postmap", "aliases"],
+  "tags": ["postfix", "mta", "email", "e-mail", "smtp", "smtpd", "postmap", "aliases", "multi instance", "postmulti"],
   "operatingsystem_support": [
     {
         "operatingsystem": "CentOS",
