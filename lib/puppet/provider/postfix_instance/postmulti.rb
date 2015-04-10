@@ -21,7 +21,7 @@ Puppet::Type.type(:postfix_instance).provide(:postmulti) do
       }
     end
   end
- 
+
   def self.instances
     instances = self.get_postfix_instances.select { |i| i[:default] != 'y' }
     instances.collect do |instance|
@@ -50,17 +50,35 @@ Puppet::Type.type(:postfix_instance).provide(:postmulti) do
   end 
 
   def create
-    postmulti(  '-e', 'create', '-I', @resource[:name], 
-                "config_directory=#{resource[:config_directory]}",
-                "queue_directory=#{resource[:queue_directory]}",
-                "data_directory=#{resource[:data_directory]}"
-    )
-    @property_hash[:ensure] = :present
-    print @resource[:config_directory]
+    cmd = 'create'
+    args = [ "config_directory=#{resource[:config_directory]}" ]
+    if Dir.exists?(@resource[:config_directory])
+      cmd = 'import'
+    else
+      args.push("queue_directory=#{resource[:queue_directory]}",
+                "data_directory=#{resource[:data_directory]}")
+    end
+
+    begin
+      cmd = ['postmulti', '-e', cmd, '-I', self.name, args].join(" ")
+      debug("Executing '#{cmd}'")
+      stdout_str, stderr_str, status = 
+        Open3.capture3(cmd)
+        debug(stdout_str)
+    rescue SystemCallError => e
+      raise Puppet::Error, "Could not run postmulti #{self.name}: #{stderr_str}", $!.backtrace
+      return nil
+    end
+
+    if status.success?
+      @property_hash[:ensure] = :present
+    else
+      raise Puppet::Error, "Failed to add or import instance #{self.name}: #{stdout_str}"
+    end
   end
 
   def destroy
     postmulti( '-e', 'destroy', '-i', @resource[:name])
   end
 end
- 
+
