@@ -77,6 +77,30 @@ The module's primary class postfix guides the basic setup of postfix.
 This define allows managing a postfix configuration file (like main.cf or
 master.cf) and will handle service reload on change. 
 
+### Managing instances with postfix_instance type
+
+Postfix suppports running multiple instances, which is described at
+http://www.postfix.org/MULTI_INSTANCE_README.html
+
+This module provides a type which is able to manage instances (currently limited
+to create or destroy of instances).
+
+An example which creates a instance called 'postfix-out':
+
+```puppet
+postfix_instance { 'postfix-out':
+  ensure            => present,
+  config_directory  => '/etc/postfix-out',
+  data_directory    => '/var/lib/postfix-out',
+  queue_directory   => '/var/spool/postfix-out',
+}
+```
+
+Only name is required, the directory settings have sensible defaults.
+Please see puppet describe postfix_instance for details.    
+
+
+
 ## Reference
 
 The module contains the following public classes:
@@ -90,6 +114,10 @@ It also includes the following defined types:
 - postfix::config
 - postfix::maincf
 - postfix::mastercf
+
+And the following native types:
+
+- postfix_instance
 
 Lastly it contains an EXPERIMENTAL custom type
 
