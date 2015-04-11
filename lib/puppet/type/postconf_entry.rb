@@ -37,4 +37,8 @@ Puppet::Type.newtype(:postconf_entry) do
   autorequire(:file) do
     File.join(self[:confdir], 'main.cf')
   end
+
+  autorequire(:postfix_instance) do
+    self[:instance]
+  end
 end
