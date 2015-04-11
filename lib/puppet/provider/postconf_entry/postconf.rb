@@ -76,7 +76,9 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   end
 
   def destroy
-    rm_conf_entry(resource[:key])
+    Puppetx::Aptituz::Postfix.remove_postconf_values(
+      resource[:instance], resource[:key]
+    )
   end
 
 end
