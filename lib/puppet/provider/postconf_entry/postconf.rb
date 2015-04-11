@@ -1,15 +1,18 @@
+require File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", "puppet_x", "aptituz", "postfix.rb"))
+
 Puppet::Type.type(:postconf_entry).provide(:postconf) do
 
   commands :postconf => 'postconf'
+  commands :postmulti => 'postmulti'
 
   def self.instances
-    self.fetch_resources('/etc/postfix')
+    self.fetch_resources(nil)
   end
 
   def self.prefetch(resources)
-    confdirs = resources.map { |name, resource| resource[:confdir] }.uniq
-    confdirs.each do |confdir|
-        settings = self.fetch_resources(confdir)
+    postfix_instances = resources.map { |name, resource| resource[:instance] }.uniq
+    postfix_instances.each do |instance|
+        settings = self.fetch_resources(instance)
 
         resources.keys.each do |name|
             if setting = settings.find{ |setting| setting.name == name }
@@ -19,22 +22,16 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
     end
   end
 
-  def self.run_postconf_with_confdir(confdir, args)
-    postconf('-c', confdir, args)
+  def self.run_postconf_with_instance(instance, args)
+    postmulti('-i', instance, '-x', 'postconf', args)
   end
-
-  def self.list_conf_entries(confdir)
-    self.run_postconf_with_confdir(confdir, '-n').split("\n").collect do |line|
-        name, value = line.split(' = ', 2)
-        yield name, value if block_given?
-        [name, value]
-    end
-  end
-
 
   def run_postconf(*args)
-    confdir = resource[:confdir]
-    self.class.run_postconf_with_confdir(confdir, args)
+    instance = resource[:instance]
+    if instance.nil?
+      instance = '-'
+    end
+    self.class.run_postconf_with_instance(instance, args)
   end
 
   def set_conf_entry(key, value)
@@ -47,13 +44,13 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
     run_postconf(args)
   end
 
-  def self.fetch_resources(confdir)
-    self.list_conf_entries(confdir).collect do |name, value|
+  def self.fetch_resources(instance)
+    Puppetx::Aptituz::Postfix.get_postconf_entries.collect do |name, value|
       new(  :name   => name,
           :key      => name,
           :value    => value,
           :ensure   => :present,
-          :confdir  => '/etc/postfix',
+          :instance  => instance,
       )
     end
 

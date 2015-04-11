@@ -1,37 +1,26 @@
+require File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", "puppet_x", "aptituz", "postfix.rb"))
+
 Puppet::Type.type(:postfix_instance).provide(:postmulti) do
-  
+
   commands :postmulti => 'postmulti'
   commands :postconf  => 'postconf'
 
-  def self.get_instance_directories(dir)
-    postconf('-c', dir, '-h', 'queue_directory', 'data_directory').split("\n")
-  end 
-    
-  def self.get_postfix_instances
-    postmulti('-l').split("\n").collect do |line|
-      name, group, default, directory = line.split(/\s+/, 4)
-      queue_directory, data_directory = self.get_instance_directories(directory)
-      { :name             => name,
-        :group            => group,
-        :default          => default,
-        :config_directory => directory,
-        :queue_directory  => queue_directory,
-        :data_directory   => data_directory,
-    
-      }
-    end
+  def initialize(value={})
+    super(value)
+    @property_flush = {}
   end
 
   def self.instances
-    instances = self.get_postfix_instances.select { |i| i[:default] != 'y' }
-    instances.collect do |instance|
-      new(  :name              => instance[:name],
-            :ensure            => :present,
-            :config_directory  => instance[:config_directory],
-            :queue_directory   => instance[:queue_directory],
-            :data_directory    => instance[:data_directory],
-      )
-    end
+     Puppetx::Aptituz::Postfix.get_postfix_instances.collect do |name, instance|
+        new(  :name              => name,
+              :ensure            => :present,
+              :group             => instance[:group],
+              :enabled           => instance[:enabled],
+              :config_directory  => instance[:config_directory],
+              :queue_directory   => instance[:queue_directory],
+              :data_directory    => instance[:data_directory],
+        )
+     end
   end
 
   def self.prefetch(resources)
@@ -41,13 +30,38 @@ Puppet::Type.type(:postfix_instance).provide(:postmulti) do
         resources[name].provider = prov
       end
     end
-  end    
+  end
 
   mk_resource_methods
 
+  def enabled=(value)
+    @property_flush[:enabled] = value
+  end
+
+  def config_directory=(value)
+    raise Puppet::Error,
+      "changing the config_directory of an existing postfix_instance is not supported"
+  end
+
+  def queue_directory=(value)
+    @property_flush[:queue_directory] = value
+  end
+
+  def spool_directory=(value)
+    @property_flush[:spool_directory] = value
+  end
+
+  def data_directory=(value)
+    @property_flush[:data_directory] = value
+  end
+
+  def group=(group)
+    @property_flush[:group] = group
+  end
+
   def exists?
     @property_hash[:ensure] == :present
-  end 
+  end
 
   def create
     cmd = 'create'
@@ -59,10 +73,15 @@ Puppet::Type.type(:postfix_instance).provide(:postmulti) do
                 "data_directory=#{resource[:data_directory]}")
     end
 
+    params = [ '-e', cmd, '-I', self.name ]
+    if ! @resource[:group].nil?
+        params.push('-G', @resource[:group])
+    end
+
     begin
-      cmd = ['postmulti', '-e', cmd, '-I', self.name, args].join(" ")
+      cmd = ['postmulti', params, args].join(" ")
       debug("Executing '#{cmd}'")
-      stdout_str, stderr_str, status = 
+      stdout_str, stderr_str, status =
         Open3.capture3(cmd)
         debug(stdout_str)
     rescue SystemCallError => e
@@ -79,6 +98,33 @@ Puppet::Type.type(:postfix_instance).provide(:postmulti) do
 
   def destroy
     postmulti( '-e', 'destroy', '-i', @resource[:name])
+  end
+
+  def flush
+    debug("Flushing postfix_instance #{self.name}")
+
+    instance_settings = {}
+    if @property_flush[:group]
+      postmulti('-e', 'assign', '-i', self.name, '-G', @property_flush[:group])
+    end
+
+    if @property_flush[:enabled]
+      instance_settings['multi_instance_enable'] =
+        (@property_flush[:enabled]) ? 'yes' : 'no'
+    end
+
+    if @property_flush[:queue_directory]
+      instance_settings['queue_directory'] = @property_flush[:queue_directory]
+    end
+
+    if @property_flush[:data_directory]
+      instance_settings['data_directory'] = @property_flush[:data_directory]
+    end
+
+    unless instance_settings.empty?
+        Puppetx::Aptituz::Postfix.set_postconf_values(self.name, instance_settings)
+    end
+
   end
 end
 
