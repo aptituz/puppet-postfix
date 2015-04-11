@@ -20,24 +20,6 @@ Puppet::Type.newtype(:postconf_entry) do
     defaultto { nil }
   end
    
-  newparam(:confdir) do
-    desc "Optional: the confdir in which postfix configurations reside. Thats
-          most useful when working with multiple instances of postfix and
-          therefore defaults to '/etc/postfix'"
-    defaultto '/etc/postfix'
-
-
-    validate do |val|
-      unless Pathname.new(val).absolute?
-        fail("confdir must be fully qualified, not '#{val}'")
-      end
-    end
-  end
-
-  autorequire(:file) do
-    File.join(self[:confdir], 'main.cf')
-  end
-
   autorequire(:postfix_instance) do
     self[:instance]
   end
