@@ -24,28 +24,6 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
     end
   end
 
-  def self.run_postconf_with_instance(instance, args)
-    postmulti('-i', instance, '-x', 'postconf', args)
-  end
-
-  def run_postconf(*args)
-    instance = resource[:instance]
-    if instance.nil?
-      instance = '-'
-    end
-    self.class.run_postconf_with_instance(instance, args)
-  end
-
-  def set_conf_entry(key, value)
-    args = [ '-e', "#{resource[:key]}=#{value}"]
-    run_postconf(args)
-  end
-
-  def rm_conf_entry(key)
-    args = [ '-X', key ]
-    run_postconf(args)
-  end
-
   def self.fetch_resources(instance)
     Puppetx::Aptituz::Postfix.get_postconf_entries(instance).collect do |name, value|
       new(  :name   => "#{name}",
@@ -65,12 +43,18 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   mk_resource_methods
 
   def value=(value)
-    set_conf_entry(resource[:key], value)
+    Puppetx::Aptituz::Postfix.set_postconf_values(
+      resource[:instance], resource[:key] => resource[:value])
     @property_hash[:value] = value
   end
 
   def create
-    set_conf_entry(resource[:key], resource[:value]) 
+    unless Puppetx::Aptituz::Postfix.get_postfix_instances[resource[:instance]]
+      raise Puppet::Error, "no postfix instance named '#{resource[:instance]}' exists"
+    end
+
+    Puppetx::Aptituz::Postfix.set_postconf_values(
+      resource[:instance], resource[:key] => resource[:value])
     @property_hash[:value] = resource[:value]
     @property_hash[:ensure] = :present
   end
