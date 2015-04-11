@@ -47,8 +47,8 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
   end
 
   def self.fetch_resources(instance)
-    Puppetx::Aptituz::Postfix.get_postconf_entries.collect do |name, value|
-      new(  :name   => name,
+    Puppetx::Aptituz::Postfix.get_postconf_entries(instance).collect do |name, value|
+      new(  :name   => "#{name}",
           :key      => name,
           :value    => value,
           :ensure   => :present,
