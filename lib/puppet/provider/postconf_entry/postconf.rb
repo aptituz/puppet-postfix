@@ -14,9 +14,11 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
     postfix_instances.each do |instance|
         settings = self.fetch_resources(instance)
 
-        resources.keys.each do |name|
-            if setting = settings.find{ |setting| setting.name == name }
-                resources[name].provider = setting
+        # match resources with same instance and key, not name since
+        # this is not neccesarily distinct
+        resources.each do |name, resource|
+            if prov = settings.find { |entry| entry.key == resource[:key] and instance == resource[:instance] }
+              resources[name].provider = entry
             end
         end
     end
