@@ -63,7 +63,6 @@ module Puppetx::Aptituz
     end
 
     def self.set_postconf_values(instance, key_value_pairs)
-        print key_value_pairs
       settings = key_value_pairs.each.collect { |k,v| "#{k}=#{v}" }
       stdout_str, stderr_str, status = self.run_postconf(instance, ['-e', settings])
     
@@ -71,6 +70,14 @@ module Puppetx::Aptituz
         raise Puppet::Error, "unable to set postconf values: #{stdout_str} #{stderr_str}"
       end
       
+    end
+
+    def self.remove_postconf_values(instance, keys)
+      stdout_str, stderr_str, status = self.run_postconf(instance, ['-X', keys])
+
+      unless status.success?
+        raise Puppet::Error, "unable to set postconf values: #{stdout_str} #{stderr_str}"
+      end
     end
 
   end
