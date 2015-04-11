@@ -51,7 +51,38 @@ module Puppetx::Aptituz
       end
       entries
     end
-      
+
+    def self.postfix_services(instance = nil)
+      stdout_str, stderr_str, enabled = self.run_postconf(instance, ['-M'])
+      entries = {}
+      stdout_str.split("\n").each do |line|
+        service, type, private, unprivileged, chroot, wakeup, proclimit, cmd =
+          line.split(/\s+/, 8)
+
+        name = "#{service}/#{type}"
+        entries[name] = {
+          :service  => service,
+          :type     => type,
+          :private  => private,
+          :unprivileged => unprivileged,
+          :chroot   => chroot,
+          :wakeup   => wakeup,
+          :process_limit  => proclimit,
+          :command  => cmd
+        }
+       
+        # replace "boolean" options by true, false or nil 
+        [:private, :unprivileged, :chroot].each do |opt|
+          entries[name][opt] = case entries[name][opt]
+            when 'y' then true
+            when 'n' then false
+            when '-' then nil
+          end
+        end
+      end
+      entries
+    end
+ 
     def self.get_postconf_entries(instance = nil)
       stdout_str, stderr_str, enabled = self.run_postconf(instance, ['-n'])
       entries = {}
