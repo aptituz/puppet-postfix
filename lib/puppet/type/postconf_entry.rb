@@ -15,6 +15,11 @@ Puppet::Type.newtype(:postconf_entry) do
     desc "which value to set on the specified key"
   end
 
+  newproperty(:instance) do
+    desc "the instance to which the configuration setting belongs"
+    defaultto { nil }
+  end
+   
   newparam(:confdir) do
     desc "Optional: the confdir in which postfix configurations reside. Thats
           most useful when working with multiple instances of postfix and
