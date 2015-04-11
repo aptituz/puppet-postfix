@@ -18,7 +18,7 @@ Puppet::Type.type(:postconf_entry).provide(:postconf) do
         # this is not neccesarily distinct
         resources.each do |name, resource|
             if prov = settings.find { |entry| entry.key == resource[:key] and instance == resource[:instance] }
-              resources[name].provider = entry
+              resources[name].provider = prov
             end
         end
     end
