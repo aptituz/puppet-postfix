@@ -12,3 +12,6 @@ gem 'rspec', '< 2.99'
 gem 'rspec-puppet'
 gem 'puppetlabs_spec_helper', '>= 0.1.0'
 gem 'puppet', puppetversion
+
+gem 'beaker', :require => false
+gem 'beaker-rspec', :require => false
