@@ -15,3 +15,4 @@ gem 'puppet', puppetversion
 
 gem 'beaker', :require => false
 gem 'beaker-rspec', :require => false
+gem 'pry', :require => false
