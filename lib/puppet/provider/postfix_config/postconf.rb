@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", "puppet_x", "aptituz", "postfix.rb"))
 
-Puppet::Type.type(:postconf_entry).provide(:postconf) do
+Puppet::Type.type(:postfix_config).provide(:postconf) do
 
   commands :postconf => 'postconf'
   commands :postmulti => 'postmulti'

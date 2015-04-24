@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:postconf_entry) do
+Puppet::Type.newtype(:postfix_config) do
   desc "Puppet type that allows setting postfix configuration settings"
   ensurable
 
