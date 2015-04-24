@@ -1,6 +1,6 @@
 # = Define: postfix::mapsupport
 #
-# Define to install loadable map supporsupport packages for postfix (e.g. optional ldap support)
+# Define to install loadable map support packages for postfix (e.g. optional ldap support)
 define postfix::mapsupport (
     $map            = $title,
     $package        = undef,
