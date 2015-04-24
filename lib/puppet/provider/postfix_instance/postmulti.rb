@@ -78,6 +78,12 @@ Puppet::Type.type(:postfix_instance).provide(:postmulti) do
         params.push('-G', @resource[:group])
     end
 
+    [:enabled, :queue_directory, :data_directory].each do |k|
+      if not @resource[k].nil?
+        @property_flush[k] = @resource[k]
+      end
+    end
+
     begin
       cmd = ['postmulti', params, args].join(" ")
       debug("Executing '#{cmd}'")
@@ -97,6 +103,7 @@ Puppet::Type.type(:postfix_instance).provide(:postmulti) do
   end
 
   def destroy
+    postmulti( '-e', 'disable', '-i', @resource[:name])
     postmulti( '-e', 'destroy', '-i', @resource[:name])
   end
 
