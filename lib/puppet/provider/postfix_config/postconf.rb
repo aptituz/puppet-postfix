@@ -24,28 +24,6 @@ Puppet::Type.type(:postfix_config).provide(:postconf) do
     end
   end
 
-  def self.run_postconf_with_instance(instance, args)
-    postmulti('-i', instance, '-x', 'postconf', args)
-  end
-
-  def run_postconf(*args)
-    instance = resource[:instance]
-    if instance.nil?
-      instance = '-'
-    end
-    self.class.run_postconf_with_instance(instance, args)
-  end
-
-  def set_conf_entry(key, value)
-    args = [ '-e', "#{resource[:key]}=#{value}"]
-    run_postconf(args)
-  end
-
-  def rm_conf_entry(key)
-    args = [ '-X', key ]
-    run_postconf(args)
-  end
-
   def self.fetch_resources(instance)
     Puppetx::Aptituz::Postfix.get_postconf_entries(instance).collect do |name, value|
       new(  :name   => "#{name}",
