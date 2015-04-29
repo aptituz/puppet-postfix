@@ -1,4 +1,4 @@
-puppet-module-aptituz-postfix (1.0.0) unstable; urgency=low
+puppet-module-aptituz-postfix (1.0.0.1) unstable; urgency=low
 
   * Initial release
 
