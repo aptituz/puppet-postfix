@@ -1,9 +1,10 @@
 require 'spec_helper_acceptance'
 
+mydomain = "test.domain.local"
+
 describe 'postfix_config' do
   describe 'running puppet code' do
     it 'should work with no errors' do
-    mydomain = "test.domain.local"
       pp = <<-EOS
       include postfix
       postfix_config { 'mydomain': ensure => present, key => 'mydomain', value => '#{mydomain}'}
@@ -33,8 +34,8 @@ describe 'postfix_config' do
       pp = <<-EOS
       postfix_instance { 'postfix-out': ensure => present}
       postfix_config { 'mydomain':
-        ensure   => present
-        value    => "#{mydomain}"
+        ensure   => present,
+        value    => "#{mydomain}",
         instance => 'postfix-out'
       }
       EOS
