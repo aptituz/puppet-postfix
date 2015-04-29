@@ -8,5 +8,7 @@ Standards-Version: 3.9.5
 
 Package: puppet-module-aptituz-postfix
 Architecture: all
+Conflicts: puppet-module-postfix
+Replaces: puppet-module-postfix
 Depends: ${misc:Depends}
 Description: puppet module postfix
