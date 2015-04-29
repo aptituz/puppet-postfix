@@ -103,6 +103,7 @@ Puppet::Type.type(:postfix_instance).provide(:postmulti) do
   end
 
   def destroy
+    postmulti( '-x', 'postfix', 'stop', '-i', @resource[:name])
     postmulti( '-e', 'disable', '-i', @resource[:name])
     postmulti( '-e', 'destroy', '-i', @resource[:name])
   end
