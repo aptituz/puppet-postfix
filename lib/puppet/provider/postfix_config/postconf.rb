@@ -50,7 +50,7 @@ Puppet::Type.type(:postfix_config).provide(:postconf) do
 
   def create
     Puppetx::Aptituz::Postfix.set_postconf_values(
-       resource[:instance], { resource[:key] => value })
+       resource[:instance], { resource[:key] => resource[:value] })
     @property_hash[:value] = resource[:value]
     @property_hash[:ensure] = :present
   end
