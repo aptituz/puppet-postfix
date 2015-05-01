@@ -1,3 +1,9 @@
+puppet-module-aptituz-postfix (1.0.0.2) unstable; urgency=low
+
+  * Add lib to packaging
+
+ -- Patrick Schoenfeld <patrick.schoenfeld@credativ.de>  Fri, 01 May 2015 15:14:42 +0100
+
 puppet-module-aptituz-postfix (1.0.0.1) unstable; urgency=low
 
   * Initial release

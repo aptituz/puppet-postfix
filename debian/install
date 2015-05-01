@@ -1,3 +1,4 @@
+lib         usr/share/puppet/modules.available/postfix
 manifests   usr/share/puppet/modules.available/postfix
 templates   usr/share/puppet/modules.available/postfix
 README*     usr/share/doc/puppet-module-postfix
