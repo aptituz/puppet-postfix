@@ -63,7 +63,7 @@ module Puppetx::Aptituz
     end
 
     def self.set_postconf_values(instance, key_value_pairs)
-      settings = key_value_pairs.each.collect { |k,v| "#{k}=#{v}" }
+      settings = key_value_pairs.each.collect { |k,v| "#{k}='#{v}'" }
       stdout_str, stderr_str, status = self.run_postconf(instance, ['-e', settings])
     
       unless status.success?
