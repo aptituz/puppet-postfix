@@ -19,7 +19,7 @@ define postfix::config (
     if ! $source and ! $content and ! $options {
         fail("You must either specify a source, content or pass options for a template (${title})")
     }
-   
+
     $dir = dirname($path)
     if $dir and ! defined(File[$dir]) {
         file {$dir:
