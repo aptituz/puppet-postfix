@@ -25,7 +25,7 @@ define postfix::mapsupport (
         }
 
     } else {
-        warn("no package known for ${mod-support} on ${::osfamily}. If this is an error, please file a bug")
+        warn("no package known for ${map}-support on ${::osfamily}. If this is an error, please file a bug")
     }
 
 }
