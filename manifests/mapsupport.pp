@@ -2,9 +2,9 @@
 #
 # Define to install loadable map support packages for postfix (e.g. optional ldap support)
 define postfix::mapsupport (
+    $ensure         = 'present',
     $map            = $title,
     $package        = undef,
-    $package_ensure = 'present',
 ) {
 
     if ! defined(Class['postfix']) {
