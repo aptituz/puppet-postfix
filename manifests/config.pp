@@ -8,6 +8,7 @@ define postfix::config (
     $ensure     = 'present',
     $template   = undef,
     $source     = undef,
+    $content    = undef,
     $options    = undef,
 ) {
 
