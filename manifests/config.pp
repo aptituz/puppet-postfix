@@ -17,16 +17,16 @@ define postfix::config (
     }
 
     if ! $source and ! $content and ! $options {
-        fail("You must either specify a source, content or pass options for a template ($title)")
+        fail("You must either specify a source, content or pass options for a template (${title})")
     }
    
     $dir = dirname($path)
     if $dir and ! defined(File[$dir]) {
         file {$dir:
-            ensure  => directory,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
         }
     }
 
@@ -41,11 +41,11 @@ define postfix::config (
         if $template {
             $real_template = $template
         } elsif $path =~ /master.cf$/ {
-            $real_template = "postfix/postfix_master.cf.erb"
+            $real_template = 'postfix/postfix_master.cf.erb'
         } elsif $path =~ /main.cf$/ {
-            $real_template = "postfix/postfix_main.cf.erb"
+            $real_template = 'postfix/postfix_main.cf.erb'
         } else {
-            fail("no template known for '$path' and none specified as parameter")
+            fail("no template known for '${path}' and none specified as parameter")
         }
 
         $real_content   = template($real_template)

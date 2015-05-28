@@ -8,7 +8,7 @@ define postfix::mapsupport (
 ) {
 
     if ! defined(Class['postfix']) {
-        fail("You must include the postfix base class before using any postfix defined resources")
+        fail('You must include the postfix base class before using any postfix defined resources')
     }
 
     if $::osfamily == 'Debian' {
@@ -25,7 +25,7 @@ define postfix::mapsupport (
         }
 
     } else {
-        warn("no package known for $mod-support on $::osfamily. If this is an error, please file a bug")
+        warn("no package known for ${mod-support} on ${::osfamily}. If this is an error, please file a bug")
     }
 
 }

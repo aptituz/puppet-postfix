@@ -111,7 +111,7 @@ class postfix (
             ensure   => $ensure,
             options  => $master_options,
             template => $master_config_template,
-        }        
+        }
 
         if $manage_aliases {
             class { 'postfix::aliases':
