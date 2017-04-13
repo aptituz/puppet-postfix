@@ -3,16 +3,17 @@ source 'https://rubygems.org'
 if ENV.key?('PUPPET_VERSION')
   puppetversion = "= #{ENV['PUPPET_VERSION']}"
 else
-  puppetversion = ['>= 2.7']
+  puppetversion = ['>= 3.7']
 end
 
 gem 'rake'
 gem 'puppet-lint'
-gem 'rspec', '< 2.99'
+gem 'rspec'
 gem 'rspec-puppet'
+gem 'rspec-mocks'
 gem 'puppetlabs_spec_helper', '>= 0.1.0'
 gem 'puppet', puppetversion
 
-gem 'beaker', :require => false
-gem 'beaker-rspec', :require => false
+#ägem 'beaker', :require => false
+#ägem 'beaker-rspec', :require => false
 gem 'pry', :require => false

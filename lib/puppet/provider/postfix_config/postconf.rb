@@ -25,7 +25,7 @@ Puppet::Type.type(:postfix_config).provide(:postconf) do
   end
 
   def self.fetch_resources(instance)
-    Puppetx::Aptituz::Postfix.get_postconf_entries(instance).collect do |name, value|
+    PuppetX::Aptituz::Postfix.get_postconf_entries(instance).collect do |name, value|
       new(  :name   => "#{name}",
           :key      => name,
           :value    => value,
@@ -43,20 +43,20 @@ Puppet::Type.type(:postfix_config).provide(:postconf) do
   mk_resource_methods
 
   def value=(value)
-    Puppetx::Aptituz::Postfix.set_postconf_values(
+    PuppetX::Aptituz::Postfix.set_postconf_values(
        resource[:instance], { resource[:key] => value })
     @property_hash[:value] = value
   end
 
   def create
-    Puppetx::Aptituz::Postfix.set_postconf_values(
+    PuppetX::Aptituz::Postfix.set_postconf_values(
        resource[:instance], { resource[:key] => resource[:value] })
     @property_hash[:value] = resource[:value]
     @property_hash[:ensure] = :present
   end
 
   def destroy
-    Puppetx::Aptituz::Postfix.remove_postconf_values(
+    PuppetX::Aptituz::Postfix.remove_postconf_values(
       resource[:instance], resource[:key]
     )
   end
