@@ -22,6 +22,8 @@ define postfix::map (
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+        content => $content,
+        source  => $source,
         require => Package['postfix'],
         notify  => Exec["postmap ${real_path}"],
     }

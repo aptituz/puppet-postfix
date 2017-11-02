@@ -16,4 +16,14 @@ describe 'postfix::map' do
     })}
     it { should contain_exec('postmap /etc/postfix/transports')}
   end
+
+  context 'with content parameter' do
+    let (:params) { { :content => 'testcontent'} }
+    it { is_expected.to contain_file('/etc/postfix/transports').with( :content => 'testcontent') }
+  end
+
+  context 'with source parameter' do
+    let (:params) { { :source => 'puppet://foo/bar'} }
+    it { is_expected.to contain_file('/etc/postfix/transports').with( :source => 'puppet://foo/bar') }
+  end
 end
