@@ -129,7 +129,7 @@ recommended to be used, since its likely to change.
 ## Limitations
 
 This module has been tested and is used primarily on Debian-based systems.
-Other systems are supported but cannot be guaranted.
+Other systems are supported but cannot be guaranteed.
 
 ## Development
 
