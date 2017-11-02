@@ -1,8 +1,16 @@
-rvm: 1.9.3
+rvm: 2.1.5
 notifications:
   email:
     - patrick.schoenfeld@googlemail.com
 env:
-  - PUPPET_VERSION=3.7.2
-
-
+bundler_args: --without system_tests
+script: "bundle exec rake validate && bundle exec rake spec && bundle exec rake lint"
+matrix:
+  fast_finish: true
+  include:
+  - rvm: 2.1.5
+    env: PUPPET_VERSION="~> 3.7.2"
+  - rvm: 2.1.5
+    env: PUPPET_VERSION="~> 3.7.2" FUTURE_PARSER="yes"
+  - rvm: 2.1.6
+    env: PUPPET_VERSION="~> 4.0" STRICT_VARIABLES="yes"
