@@ -8,6 +8,7 @@ class postfix::params {
     $manage_aliases         = false
     $confdir                = '/etc/postfix'
     $config_source          = undef
+    $manage_config          = false
     $main_config_template   = undef
     $master_config_template = undef
     $instances              = undef
