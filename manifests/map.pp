@@ -30,11 +30,13 @@ define postfix::map (
 
     # If the main.cf is handled via puppet, make sure that postmap command
     # is executed after main.cf was created (because otherwise it fails)
+    # lint:ignore:relative_classname_inclusion
     if defined(::Postfix::Config['/etc/postfix/main.cf']) {
         Exec <| title == "postmap ${real_path}" |> {
             require +> ::Postfix::Config['/etc/postfix/main.cf']
         }
     }
+    # lint:endignore
 
     exec { "postmap ${real_path}":
         command     => "/usr/sbin/postmap ${real_path}",
