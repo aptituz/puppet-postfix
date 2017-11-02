@@ -1,6 +1,6 @@
 {
-  "name": "aptituz/postfix",
-  "version": "00.0",
+  "name": "aptituz-postfix",
+  "version": "0.1.0",
   "author": "Patrick Schoenfeld <patrick.schoenfeld@credativ.de>",
   "summary": "puppet module to manage postfix",
   "license": "MIT",
