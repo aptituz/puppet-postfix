@@ -30,9 +30,9 @@ define postfix::map (
 
     # If the main.cf is handled via puppet, make sure that postmap command
     # is executed after main.cf was created (because otherwise it fails)
-    if defined(Postfix::Config['/etc/postfix/main.cf']) {
+    if defined(::Postfix::Config['/etc/postfix/main.cf']) {
         Exec <| title == "postmap ${real_path}" |> {
-            require +> Postfix::Config['/etc/postfix/main.cf']
+            require +> ::Postfix::Config['/etc/postfix/main.cf']
         }
     }
 
@@ -41,6 +41,4 @@ define postfix::map (
         refreshonly => true,
         require     => Package['postfix'],
     }
-
 }
-    

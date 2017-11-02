@@ -77,11 +77,11 @@ class postfix (
     $disabled_hosts         = $postfix::params::disabled_hosts,
     ) inherits postfix::params {
 
-    class { 'postfix::package':
+    class { '::postfix::package':
         ensure => $ensure,
     }
 
-    class { 'postfix::instances':
+    class { '::postfix::instances':
         manage_instances => $manage_instances,
         instances        => $instances,
         require          => Class['postfix::package'],
@@ -96,26 +96,26 @@ class postfix (
         $real_enabled = $ensure_enabled
     }
 
-    class { 'postfix::service':
+    class { '::postfix::service':
         ensure  => $real_running,
         enabled => $real_enabled,
     }
 
     if $manage_config {
-        postfix::config { '/etc/postfix/main.cf':
+        ::postfix::config { '/etc/postfix/main.cf':
             ensure   => $ensure,
             options  => $postfix_options,
             template => $main_config_template,
         }
 
-        postfix::config { '/etc/postfix/master.cf':
+        ::postfix::config { '/etc/postfix/master.cf':
             ensure   => $ensure,
             options  => $master_options,
             template => $master_config_template,
         }
 
         if $manage_aliases {
-            class { 'postfix::aliases':
+            class { '::postfix::aliases':
                 ensure  => $ensure,
                 aliases => $aliases
             }

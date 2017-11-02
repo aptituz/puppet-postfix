@@ -6,7 +6,7 @@ class postfix::aliases (
     $template   = 'postfix/aliases.erb',
     $source     = undef
 ) {
-    include postfix::newaliases
+    include ::postfix::newaliases
 
     if $source {
         $real_content = undef
