@@ -61,21 +61,21 @@
 #
 #   Patrick Schoenfeld <patrick.schoenfeld@credativ.de
 class postfix (
-    $ensure                 = $postfix::params::ensure,
-    $ensure_running         = $postfix::params::ensure_running,
-    $ensure_enabled         = $postfix::params::ensure_enabled,
-    $manage_config          = $postfix::params::manage_config,
-    $manage_instances       = $postfix::params::manage_instances,
-    $manage_aliases         = $postfix::params::manage_aliases,
-    $config_source          = $postfix::params::config_source,
-    $main_config_template   = $postfix::params::main_config_template,
-    $master_config_template = $postfix::params::master_config_template,
-    $instances              = $postfix::params::instances,
-    $aliases                = $postfix::params::aliases,
-    $postfix_options        = $postfix::params::postfix_options,
-    $master_options         = $postfix::params::master_options,
-    $disabled_hosts         = $postfix::params::disabled_hosts,
-    ) inherits postfix::params {
+    $ensure                 = $::postfix::params::ensure,
+    $ensure_running         = $::postfix::params::ensure_running,
+    $ensure_enabled         = $::postfix::params::ensure_enabled,
+    $manage_config          = $::postfix::params::manage_config,
+    $manage_instances       = $::postfix::params::manage_instances,
+    $manage_aliases         = $::postfix::params::manage_aliases,
+    $config_source          = $::postfix::params::config_source,
+    $main_config_template   = $::postfix::params::main_config_template,
+    $master_config_template = $::postfix::params::master_config_template,
+    $instances              = $::postfix::params::instances,
+    $aliases                = $::postfix::params::aliases,
+    $postfix_options        = $::postfix::params::postfix_options,
+    $master_options         = $::postfix::params::master_options,
+    $disabled_hosts         = $::postfix::params::disabled_hosts,
+    ) inherits ::postfix::params {
 
     class { '::postfix::package':
         ensure => $ensure,
